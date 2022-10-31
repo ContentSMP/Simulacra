@@ -1,6 +1,7 @@
 package arathain.simulacra.entity;
 
 import com.google.common.collect.ImmutableList;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -138,10 +139,32 @@ public class StatueEntity extends LivingEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		this.readRot(nbt.getCompound("rot"));
+
+		if (nbt.contains("Items", NbtType.LIST)) {
+			NbtList listTag = nbt.getList("Items", 10);
+			for (int i = 0; i < listTag.size(); ++i) {
+				NbtCompound compoundTag2 = listTag.getCompound(i);
+				int j = compoundTag2.getByte("Slot") & 255;
+				if (j < this.inventory.size()) {
+					this.inventory.setStack(j, ItemStack.fromNbt(compoundTag2));
+				}
+			}
+		}
 	}
 
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		nbt.put("rot", this.writeRot());
+		NbtList list = new NbtList();
+		for (int i = 0; i < this.inventory.size(); ++i) {
+			ItemStack itemStack = this.inventory.getStack(i);
+			if (!itemStack.isEmpty()) {
+				NbtCompound compoundTag2 = new NbtCompound();
+				compoundTag2.putByte("Slot", (byte) i);
+				itemStack.writeNbt(compoundTag2);
+				list.add(compoundTag2);
+			}
+		}
+		nbt.put("Items", list);
 	}
 }
