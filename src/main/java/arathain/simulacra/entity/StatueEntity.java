@@ -34,7 +34,6 @@ public class StatueEntity extends LivingEntity {
 	public static final TrackedData<EulerAngle> LEFT_LEG_ROT = DataTracker.registerData(StatueEntity.class, TrackedDataHandlerRegistry.ROTATION);
 	public static final TrackedData<EulerAngle> RIGHT_LEG_ROT = DataTracker.registerData(StatueEntity.class, TrackedDataHandlerRegistry.ROTATION);
 	private static final EulerAngle ZERO_ROT = new EulerAngle(0.0F, 0.0F, 0.0F);
-	private static final EulerAngle TEST_ROT = new EulerAngle(0.0F, 0.0F, 5.0F);
 
 	private final SimpleInventory inventory = new SimpleInventory(6);
 
@@ -89,7 +88,6 @@ public class StatueEntity extends LivingEntity {
 
 	@Override
 	public ActionResult interact(PlayerEntity player, Hand hand) {
-		this.dataTracker.set(HEAD_ROT, TEST_ROT);
 		return super.interact(player, hand);
 	}
 
@@ -106,12 +104,12 @@ public class StatueEntity extends LivingEntity {
 	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
-		this.dataTracker.startTracking(HEAD_ROT, TEST_ROT);
-		this.dataTracker.startTracking(BODY_ROT, TEST_ROT);
+		this.dataTracker.startTracking(HEAD_ROT, ZERO_ROT);
+		this.dataTracker.startTracking(BODY_ROT, ZERO_ROT);
 		this.dataTracker.startTracking(LEFT_LEG_ROT, ZERO_ROT);
 		this.dataTracker.startTracking(RIGHT_LEG_ROT, ZERO_ROT);
 		this.dataTracker.startTracking(LEFT_ARM_ROT, ZERO_ROT);
-		this.dataTracker.startTracking(RIGHT_ARM_ROT, TEST_ROT);
+		this.dataTracker.startTracking(RIGHT_ARM_ROT, ZERO_ROT);
 	}
 
 	private void readRot(NbtCompound tag) {
