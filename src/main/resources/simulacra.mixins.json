@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "arathain.simulacra.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "client": [
+    "BipedEntityModelAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
