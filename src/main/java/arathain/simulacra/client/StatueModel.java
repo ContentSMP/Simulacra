@@ -4,7 +4,10 @@ import arathain.simulacra.entity.StatueEntity;
 import arathain.simulacra.mixin.BipedEntityModelAccessor;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.*;
+import net.minecraft.client.render.entity.model.ArmorStandArmorEntityModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Arm;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.EulerAngle;
 
@@ -42,7 +45,31 @@ public class StatueModel extends BipedEntityModel<StatueEntity> {
 		modelPartData.getChild("left_leg").addChild("left_pants", ModelPartBuilder.create().uv(0, 48).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation.add(0.25F)), ModelTransform.pivot(0F, 0F, 0.0F));
 		modelPartData.getChild("right_leg").addChild("right_pants", ModelPartBuilder.create().uv(0, 32).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation.add(0.25F)), ModelTransform.pivot(0F, 0F, 0.0F));
 		modelPartData.getChild("body").addChild("jacket", ModelPartBuilder.create().uv(16, 32).cuboid(-4.0F, -12.0F, -2.0F, 8.0F, 12.0F, 4.0F, dilation.add(0.251F)), ModelTransform.NONE);
+
 		return TexturedModelData.of(modelData, 64, 64);
+	}
+	public static TexturedModelData getArmourTexturedModelData(Dilation dilation) {
+		ModelData modelData = new ModelData();
+		ModelPartData modelPartData = modelData.getRoot();
+		modelPartData.addChild("head", ModelPartBuilder.create(), ModelTransform.NONE);
+		modelPartData.addChild("hat", ModelPartBuilder.create(), ModelTransform.NONE);
+		modelPartData.addChild("right_arm", ModelPartBuilder.create(), ModelTransform.NONE);
+		modelPartData.addChild("left_arm", ModelPartBuilder.create(), ModelTransform.NONE);
+		modelPartData.addChild("body", ModelPartBuilder.create().uv(16, 16).cuboid(-4.0F, -12.0F, -2.0F, 8.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(0.0F, 12.0F, 0.0F));
+		modelPartData.getChild("body").addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation), ModelTransform.pivot(0.0F, -12.0F, 0.0F));
+		modelPartData.getChild("body").getChild("head").addChild("hat", ModelPartBuilder.create().uv(32, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation.add(0.5F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+		modelPartData.getChild("body").addChild("left_arm", ModelPartBuilder.create().uv(40, 16).mirrored().cuboid(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(5.0F, -9.5F, 0.0F));
+		modelPartData.getChild("body").addChild("right_arm", ModelPartBuilder.create().uv(40, 16).cuboid(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-5.0F, -9.5F, 0.0F));
+		modelPartData.addChild("right_leg", ModelPartBuilder.create().uv(0, 16).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-1.9F, 12.0F, 0.0F));
+		modelPartData.addChild("left_leg", ModelPartBuilder.create().uv(0, 16).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(1.9F, 12.0F, 0.0F));
+
+		return TexturedModelData.of(modelData, 64, 32);
+	}
+
+	@Override
+	public void setArmAngle(Arm arm, MatrixStack matrices) {
+		this.body.rotate(matrices);
+		super.setArmAngle(arm, matrices);
 	}
 
 	@Override

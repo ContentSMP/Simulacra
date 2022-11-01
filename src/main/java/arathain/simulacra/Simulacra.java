@@ -1,6 +1,10 @@
 package arathain.simulacra;
 
+import arathain.simulacra.client.screen.StatueScreenHandler;
 import arathain.simulacra.init.SimulacraEntities;
+import arathain.simulacra.init.SimulacraScreenHandlers;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.screen.ScreenHandlerType;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
@@ -16,5 +20,6 @@ public class Simulacra implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		SimulacraEntities.init();
+		SimulacraScreenHandlers.init();
 	}
 }

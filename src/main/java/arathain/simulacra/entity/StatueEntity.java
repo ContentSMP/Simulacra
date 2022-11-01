@@ -1,6 +1,8 @@
 package arathain.simulacra.entity;
 
+import arathain.simulacra.client.screen.StatueScreenHandler;
 import com.google.common.collect.ImmutableList;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,12 +12,17 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -35,7 +42,7 @@ public class StatueEntity extends LivingEntity {
 	public static final TrackedData<EulerAngle> RIGHT_LEG_ROT = DataTracker.registerData(StatueEntity.class, TrackedDataHandlerRegistry.ROTATION);
 	private static final EulerAngle ZERO_ROT = new EulerAngle(0.0F, 0.0F, 0.0F);
 
-	private final SimpleInventory inventory = new SimpleInventory(6);
+	public final SimpleInventory inventory = new SimpleInventory(6);
 
 	public StatueEntity(EntityType<? extends LivingEntity> type, World world) {
 		super(type, world);
@@ -80,6 +87,11 @@ public class StatueEntity extends LivingEntity {
 	public void equipStack(EquipmentSlot slot, ItemStack stack) {
 		this.inventory.setStack(slot.getArmorStandSlotId(), stack);
 	}
+	public void openInventory(PlayerEntity player) {
+		if (!this.world.isClient()) {;
+			player.openHandledScreen(new StatueScreenHandlerFactory());
+		}
+	}
 
 	@Override
 	public Arm getMainArm() {
@@ -88,6 +100,10 @@ public class StatueEntity extends LivingEntity {
 
 	@Override
 	public ActionResult interact(PlayerEntity player, Hand hand) {
+		if(player.getStackInHand(hand).isEmpty()) {
+			this.openInventory(player);
+			return ActionResult.CONSUME;
+		}
 		return super.interact(player, hand);
 	}
 
@@ -98,7 +114,7 @@ public class StatueEntity extends LivingEntity {
 
 	@Override
 	public boolean isPushable() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -164,5 +180,25 @@ public class StatueEntity extends LivingEntity {
 			}
 		}
 		nbt.put("Items", list);
+	}
+	private class StatueScreenHandlerFactory implements ExtendedScreenHandlerFactory {
+		private StatueEntity getStatue() {
+			return StatueEntity.this;
+		}
+
+		@Override
+		public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+			buf.writeVarInt(this.getStatue().getId());
+		}
+
+		@Override
+		public Text getDisplayName() {
+			return this.getStatue().getDisplayName();
+		}
+
+		@Override
+		public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+			return StatueScreenHandler.statueMenu(syncId, inv, this.getStatue());
+		}
 	}
 }
