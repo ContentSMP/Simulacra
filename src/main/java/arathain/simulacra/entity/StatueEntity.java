@@ -40,7 +40,7 @@ public class StatueEntity extends LivingEntity {
 	public static final TrackedData<EulerAngle> RIGHT_ARM_ROT = DataTracker.registerData(StatueEntity.class, TrackedDataHandlerRegistry.ROTATION);
 	public static final TrackedData<EulerAngle> LEFT_LEG_ROT = DataTracker.registerData(StatueEntity.class, TrackedDataHandlerRegistry.ROTATION);
 	public static final TrackedData<EulerAngle> RIGHT_LEG_ROT = DataTracker.registerData(StatueEntity.class, TrackedDataHandlerRegistry.ROTATION);
-	private static final EulerAngle ZERO_ROT = new EulerAngle(0.0F, 0.0F, 0.0F);
+	public static final EulerAngle ZERO_ROT = new EulerAngle(0.0F, 0.0F, 0.0F);
 
 	public final SimpleInventory inventory = new SimpleInventory(6);
 
@@ -65,6 +65,25 @@ public class StatueEntity extends LivingEntity {
 	}
 	public EulerAngle getLeftLegRot() {
 		return this.dataTracker.get(LEFT_LEG_ROT);
+	}
+
+	public void setHeadRot(EulerAngle ang) {
+		this.dataTracker.set(HEAD_ROT, ang);
+	}
+	public void setBodyRot(EulerAngle ang) {
+		this.dataTracker.set(BODY_ROT, ang);
+	}
+	public void setRightArmRot(EulerAngle ang) {
+		this.dataTracker.set(RIGHT_ARM_ROT, ang);
+	}
+	public void setLeftArmRot(EulerAngle ang) {
+		this.dataTracker.set(LEFT_ARM_ROT, ang);
+	}
+	public void setRightLegRot(EulerAngle ang) {
+		this.dataTracker.set(RIGHT_LEG_ROT, ang);
+	}
+	public void setLeftLegRot(EulerAngle ang) {
+		this.dataTracker.set(LEFT_LEG_ROT, ang);
 	}
 
 	@Override

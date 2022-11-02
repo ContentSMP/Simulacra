@@ -1,19 +1,22 @@
 package arathain.simulacra.client.screen;
 
-import arathain.simulacra.Simulacra;
 import arathain.simulacra.entity.StatueEntity;
 import arathain.simulacra.init.SimulacraScreenHandlers;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.EnchantmentScreenHandler;
+import net.minecraft.screen.HorseScreenHandler;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class StatueScreenHandler extends ScreenHandler {
@@ -54,9 +57,10 @@ public class StatueScreenHandler extends ScreenHandler {
 						i = 0;
 					default -> {}
 				}
-				this.addSlot(new Slot(inventory, i, 51 + l * 18, 18 + k * 18));
+				this.addSlot(new Slot(inventory, i, 41 + l * 18, 18 + k * 18));
 			}
 		}
+
 
 
 		// Player Inventory
