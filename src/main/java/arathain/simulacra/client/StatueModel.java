@@ -3,13 +3,10 @@ package arathain.simulacra.client;
 import arathain.simulacra.entity.StatueEntity;
 import arathain.simulacra.mixin.BipedEntityModelAccessor;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.gui.screen.ingame.AnvilScreen;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.ArmorStandArmorEntityModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.EulerAngle;
@@ -22,10 +19,10 @@ public class StatueModel extends BipedEntityModel<StatueEntity> {
 	public StatueModel(ModelPart root) {
 		super(root);
 		BipedEntityModelAccessor access = (BipedEntityModelAccessor) this;
-		access.setRightArm(root.getChild("body").getChild("right_arm"));
-		access.setLeftArm(root.getChild("body").getChild("left_arm"));
 		access.setHead(root.getChild("body").getChild("head"));
 		access.setHat(root.getChild("body").getChild("head").getChild("hat"));
+		access.setRightArm(root.getChild("body").getChild("right_arm"));
+		access.setLeftArm(root.getChild("body").getChild("left_arm"));
 	}
 	public static TexturedModelData getTexturedModelData(Dilation dilation) {
 		ModelData modelData = new ModelData();
@@ -54,17 +51,16 @@ public class StatueModel extends BipedEntityModel<StatueEntity> {
 	public static TexturedModelData getArmourTexturedModelData(Dilation dilation) {
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
-		modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		modelPartData.addChild("hat", ModelPartBuilder.create().uv(32, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation.add(0.5F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		//modelPartData.addChild("head", ModelPartBuilder.create(), ModelTransform.NONE);
-		//modelPartData.addChild("hat", ModelPartBuilder.create(), ModelTransform.NONE);
+		modelPartData.addChild("head", ModelPartBuilder.create(), ModelTransform.NONE);
+		modelPartData.addChild("hat", ModelPartBuilder.create(), ModelTransform.NONE);
 		modelPartData.addChild("right_arm", ModelPartBuilder.create(), ModelTransform.NONE);
 		modelPartData.addChild("left_arm", ModelPartBuilder.create(), ModelTransform.NONE);
-		modelPartData.addChild("body", ModelPartBuilder.create().uv(16, 16).cuboid(-4.0F, -12.0F, -2.0F, 8.0F, 12.0F, 4.0F, dilation.add(0.02f)), ModelTransform.pivot(0.0F, 12.0F, 0.0F));
+		modelPartData.addChild("body", ModelPartBuilder.create().uv(16, 16).cuboid(-4.0F, -12.0F, -2.0F, 8.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(0.0F, 12.0F, 0.0F));
 		modelPartData.getChild("body").addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation), ModelTransform.pivot(0.0F, -12.0F, 0.0F));
 		modelPartData.getChild("body").getChild("head").addChild("hat", ModelPartBuilder.create().uv(32, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, dilation.add(0.5F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		modelPartData.getChild("body").addChild("left_arm", ModelPartBuilder.create().uv(40, 16).mirrored().cuboid(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(5.0F, -9.5F, 0.0F));
+
 		modelPartData.getChild("body").addChild("right_arm", ModelPartBuilder.create().uv(40, 16).cuboid(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-5.0F, -9.5F, 0.0F));
+		modelPartData.getChild("body").addChild("left_arm", ModelPartBuilder.create().uv(40, 16).mirrored().cuboid(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(5.0F, -9.5F, 0.0F));
 		modelPartData.addChild("right_leg", ModelPartBuilder.create().uv(0, 16).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-1.9F, 12.0F, 0.0F));
 		modelPartData.addChild("left_leg", ModelPartBuilder.create().uv(0, 16).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(1.9F, 12.0F, 0.0F));
 
@@ -91,6 +87,20 @@ public class StatueModel extends BipedEntityModel<StatueEntity> {
 	public void setAngles(StatueEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
 		yea((soop) -> soop.getRight().setAngles(((float) Math.PI / 180F) * soop.getLeft().getWrappedPitch(), ((float) Math.PI / 180F) * soop.getLeft().getWrappedYaw(), ((float) Math.PI / 180F) * soop.getLeft().getWrappedRoll()), new Pair<>(entity.getRightArmRot(), this.rightArm), new Pair<>(entity.getLeftArmRot(), this.leftArm),new Pair<>(entity.getRightLegRot(), this.rightLeg), new Pair<>(entity.getLeftLegRot(), this.leftLeg), new Pair<>(entity.getHeadRot(), this.head), new Pair<>(entity.getBodyRot(), this.body));
 	}
+
+	@Override
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+		if(!this.leftArm.containsPart("left_sleeve")) {
+			matrices.push();
+			this.body.rotate(matrices);
+			this.head.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+			matrices.pop();
+		}
+		this.getBodyParts().forEach((bodyPart) -> {
+			bodyPart.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+		});
+	}
+
 	@SafeVarargs
 	private static void yea(Consumer<Pair<EulerAngle, ModelPart>> soup, Pair<EulerAngle, ModelPart>... iterable) {
 		Arrays.stream(iterable).toList().forEach(soup);
