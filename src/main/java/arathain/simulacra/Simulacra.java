@@ -2,9 +2,12 @@ package arathain.simulacra;
 
 import arathain.simulacra.client.screen.StatueScreenHandler;
 import arathain.simulacra.init.SimulacraEntities;
+import arathain.simulacra.init.SimulacraItems;
 import arathain.simulacra.init.SimulacraScreenHandlers;
+import arathain.simulacra.network.SyncRetainPacket;
 import arathain.simulacra.network.SyncStatueRotPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -23,6 +26,8 @@ public class Simulacra implements ModInitializer {
 	public void onInitialize(ModContainer mod) {
 		SimulacraEntities.init();
 		SimulacraScreenHandlers.init();
+		SimulacraItems.init();
 		ServerPlayNetworking.registerGlobalReceiver(SyncStatueRotPacket.ID, SyncStatueRotPacket::handle);
+		ServerPlayNetworking.registerGlobalReceiver(SyncRetainPacket.ID, SyncRetainPacket::handle);
 	}
 }

@@ -5,6 +5,8 @@ import arathain.simulacra.init.SimulacraScreenHandlers;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,6 +20,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 public class StatueScreenHandler extends ScreenHandler {
 	private StatueEntity statueProper = null;
@@ -57,7 +61,20 @@ public class StatueScreenHandler extends ScreenHandler {
 						i = 0;
 					default -> {}
 				}
-				this.addSlot(new Slot(inventory, i, 41 + l * 18, 18 + k * 18));
+				int finalI = i;
+				this.addSlot(new Slot(inventory, finalI, 41 + l * 18, 18 + k * 18) {
+					@Override
+					public boolean canInsert(ItemStack stack) {
+						int x = finalI;
+						if(x > 0) {
+							x += 1;
+							if(x == 6) {
+								x = 1;
+							}
+						}
+						return super.canInsert(stack) && (MobEntity.getPreferredEquipmentSlot(stack) == Arrays.stream(EquipmentSlot.values()).toList().get(x) || (x == 0 || x ==1));
+					}
+				});
 			}
 		}
 
