@@ -1,6 +1,7 @@
 package arathain.simulacra.init;
 
 import arathain.simulacra.Simulacra;
+import arathain.simulacra.client.screen.MannequinScreenHandler;
 import arathain.simulacra.client.screen.StatueScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -21,10 +22,11 @@ import static arathain.simulacra.Simulacra.MODID;
 
 public class SimulacraScreenHandlers {
 	public static final ExtendedScreenHandlerType<StatueScreenHandler> STATUE_SCREEN_HANDLER_TYPE = register("statue", StatueScreenHandler::new);
+	public static final ExtendedScreenHandlerType<MannequinScreenHandler> MANNEQUIN_SCREEN_HANDLER_TYPE = register("mannequin", MannequinScreenHandler::new);
 
 
 	private static <T extends ScreenHandler> ExtendedScreenHandlerType<T> register(String id, ExtendedScreenHandlerType.ExtendedFactory<T> factory) {
-		return (ExtendedScreenHandlerType<T>)Registry.register(Registry.SCREEN_HANDLER, id, new ExtendedScreenHandlerType<>(factory));
+		return Registry.register(Registry.SCREEN_HANDLER, id, new ExtendedScreenHandlerType<>(factory));
 	}
 	public static void init() {}
 }

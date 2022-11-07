@@ -1,4 +1,6 @@
 {
   "entity.simulacra.statue": "Statue",
-  "item.simulacra.statue": "Statue"
+  "item.simulacra.statue": "Statue",
+  "entity.simulacra.mannequin": "Mannequin",
+  "item.simulacra.mannequin": "Mannequin"
 }

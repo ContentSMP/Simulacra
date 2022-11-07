@@ -13,7 +13,9 @@ import com.mojang.datafixers.schemas.Schema;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.SharedConstants;
 import net.minecraft.datafixer.TypeReferences;
+import net.minecraft.datafixer.fix.EntityRenameFix;
 import net.minecraft.datafixer.schema.IdentifierNormalizingSchema;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -26,6 +28,8 @@ import org.quiltmc.qsl.datafixerupper.api.SimpleFixes;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 public class Simulacra implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -45,8 +49,8 @@ public class Simulacra implements ModInitializer {
 		QuiltDataFixerBuilder builder = new QuiltDataFixerBuilder(1);
 		builder.addSchema(0, QuiltDataFixes.BASE_SCHEMA);
 		Schema schemaV1 = builder.addSchema(1, IdentifierNormalizingSchema::new);
-		builder.addFixer(new StatueRenameFix(schemaV1, false));
 		SimpleFixes.addItemRenameFix(builder, "Retarget mannequins modid for statue item", new Identifier("mannequins", "statue"), new Identifier(MODID, "statue"), schemaV1);
-		QuiltDataFixes.registerFixer(mod, 1, builder.build(Util::getBootstrapExecutor));
+		SimpleFixes.addItemRenameFix(builder, "Retarget mannequins modid for mannequin item", new Identifier("mannequins", "mannequin"), new Identifier(MODID, "mannequin"), schemaV1);
+		QuiltDataFixes.buildAndRegisterFixer(mod, builder);
 	}
 }

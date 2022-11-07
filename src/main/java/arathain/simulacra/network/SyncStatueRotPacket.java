@@ -1,6 +1,7 @@
 package arathain.simulacra.network;
 
 import arathain.simulacra.Simulacra;
+import arathain.simulacra.entity.MannequinEntity;
 import arathain.simulacra.entity.StatueEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
@@ -20,7 +21,7 @@ public class SyncStatueRotPacket {
 	public static void send(@Nullable Entity entity, int i, EulerAngle angle) {
 		PacketByteBuf buf = PacketByteBufs.create();
 
-		if(entity instanceof StatueEntity) {
+		if(entity instanceof StatueEntity || entity instanceof MannequinEntity) {
 			buf.writeInt(entity.getId());
 			buf.writeInt(i);
 			buf.writeFloat(angle.getPitch());
@@ -52,10 +53,14 @@ public class SyncStatueRotPacket {
 							statue.setLeftArmRot(finalAngle);
 						case 2 ->
 							statue.setRightArmRot(finalAngle);
-						case 5 ->
-							statue.setLeftLegRot(finalAngle);
-						case 4 ->
-							statue.setRightLegRot(finalAngle);
+						default -> {}
+					}
+				} else if(ent instanceof MannequinEntity man) {
+					switch(partId) {
+						case 0 -> man.setHeadRot(finalAngle);
+						case 1 -> man.setBodyRot(finalAngle);
+						case 3 -> man.setLeftArmRot(finalAngle);
+						case 2 -> man.setRightArmRot(finalAngle);
 						default -> {}
 					}
 				}

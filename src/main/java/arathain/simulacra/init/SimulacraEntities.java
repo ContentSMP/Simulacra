@@ -1,5 +1,6 @@
 package arathain.simulacra.init;
 
+import arathain.simulacra.entity.MannequinEntity;
 import arathain.simulacra.entity.StatueEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -21,7 +22,7 @@ public class SimulacraEntities {
 	private static final Map<Identifier, EntityType<?>> ENTITY_TYPES = new LinkedHashMap<>();
 
 	public static final EntityType<StatueEntity> STATUE = createEntity("statue", StatueEntity.createLivingAttributes().add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1), QuiltEntityTypeBuilder.create(SpawnGroup.MISC, StatueEntity::new).setDimensions(EntityDimensions.fixed(0.85F, 1.8F)).build());
-
+	public static final EntityType<MannequinEntity> MANNEQUIN = createEntity("mannequin", StatueEntity.createLivingAttributes(), QuiltEntityTypeBuilder.create(SpawnGroup.MISC, MannequinEntity::new).setDimensions(EntityDimensions.fixed(0.85F, 1.8F)).build());
 
 	public static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
 		ENTITY_TYPES.put(new Identifier(MODID, id), type);

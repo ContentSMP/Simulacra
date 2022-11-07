@@ -19,6 +19,10 @@ public interface BipedEntityModelAccessor {
 
 	@Mutable
 	@Accessor
+	void setBody(ModelPart part);
+
+	@Mutable
+	@Accessor
 	void setLeftArm(ModelPart part);
 
 	@Mutable

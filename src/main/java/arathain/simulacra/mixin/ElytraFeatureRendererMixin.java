@@ -1,7 +1,9 @@
 package arathain.simulacra.mixin;
 
+import arathain.simulacra.client.MannequinModel;
 import arathain.simulacra.client.StatueModel;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.feature.ElytraFeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
@@ -24,6 +26,10 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
 	private void simulacra$headMovement(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, CallbackInfo ci) {
 		if(this.getContextModel() instanceof StatueModel s) {
 			s.body.rotate(matrixStack);
+			matrixStack.translate(0, -12/16f, 0);
+		}
+		if(this.getContextModel() instanceof MannequinModel s) {
+			s.rotate(matrixStack);
 			matrixStack.translate(0, -12/16f, 0);
 		}
 	}

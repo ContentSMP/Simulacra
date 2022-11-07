@@ -1,10 +1,12 @@
 package arathain.simulacra.mixin;
 
+import arathain.simulacra.client.MannequinModel;
 import arathain.simulacra.client.StatueModel;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.feature.HeadFeatureRenderer;
+import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.ModelWithHead;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,5 +26,8 @@ public abstract class HeadFeatureRendererMixin<T extends LivingEntity, M extends
 	private void simulacra$headMovement(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, CallbackInfo ci) {
 		if(this.getContextModel() instanceof StatueModel s)
 			s.body.rotate(matrixStack);
+		if(this.getContextModel() instanceof MannequinModel s) {
+			s.rotate(matrixStack);
+		}
 	}
 }

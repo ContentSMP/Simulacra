@@ -1,6 +1,7 @@
 package arathain.simulacra.init;
 
 import arathain.simulacra.Simulacra;
+import arathain.simulacra.entity.MannequinItem;
 import arathain.simulacra.entity.StatueItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -15,6 +16,7 @@ public class SimulacraItems {
 	static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	public static final Item STATUE = create("statue", new StatueItem(new QuiltItemSettings().group(ItemGroup.DECORATIONS).maxCount(32)));
+	public static final Item MANNEQUIN = create("mannequin", new MannequinItem(new QuiltItemSettings().group(ItemGroup.DECORATIONS).maxCount(32)));
 
 	private static <T extends Item> T create(String name, T item) {
 		ITEMS.put(item, new Identifier(Simulacra.MODID, name));

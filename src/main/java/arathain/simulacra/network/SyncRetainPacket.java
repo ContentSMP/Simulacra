@@ -1,6 +1,7 @@
 package arathain.simulacra.network;
 
 import arathain.simulacra.Simulacra;
+import arathain.simulacra.entity.MannequinEntity;
 import arathain.simulacra.entity.StatueEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
@@ -20,7 +21,7 @@ public class SyncRetainPacket {
 	public static void send(@Nullable Entity entity, boolean bl) {
 		PacketByteBuf buf = PacketByteBufs.create();
 
-		if(entity instanceof StatueEntity) {
+		if(entity instanceof StatueEntity || entity instanceof MannequinEntity) {
 			buf.writeInt(entity.getId());
 			buf.writeBoolean(bl);
 		}
@@ -36,6 +37,8 @@ public class SyncRetainPacket {
 				Entity ent = player.getWorld().getEntityById(entityId);
 				if(ent instanceof StatueEntity statue) {
 					statue.setRetain(retain);
+				} else if(ent instanceof MannequinEntity man) {
+					man.setRetain(retain);
 				}
 			}
 		});
