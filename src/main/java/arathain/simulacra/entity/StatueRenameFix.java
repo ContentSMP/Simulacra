@@ -12,7 +12,6 @@ public class StatueRenameFix extends EntityRenameFix {
 	}
 
 	protected String rename(String oldName) {
-		System.out.println(oldName);
 		return Objects.equals(IdentifierNormalizingSchema.normalize(oldName), "mannequins:statue") ? "simulacra:statue" : oldName;
 	}
 }

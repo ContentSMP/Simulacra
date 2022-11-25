@@ -88,7 +88,6 @@ public class StatueScreen extends HandledScreen<StatueScreenHandler> {
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
 		if(this.statue.getRetain()) {
 			this.drawTexture(matrices, i + 148, j + 57, 176, 34, 12, 11);
-			System.out.println("soop");
 		}
 
 		InventoryScreen.drawEntity(i + 22, j + 62, 17, (float)(i + 51) - this.mouseX, (float)(j + 75 - 50) - this.mouseY, this.statue);

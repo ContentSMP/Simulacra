@@ -24,7 +24,6 @@ public class FlingMannequinPacket {
 			buf.writeFloat(h);
 		}
 		if(entity.getWorld() instanceof ServerWorld s) {
-			System.out.println("yea");
 			ServerPlayNetworking.send(s.getPlayers(), ID, buf);
 		}
 	}
