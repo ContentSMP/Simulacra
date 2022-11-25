@@ -40,6 +40,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -236,7 +237,7 @@ public class MannequinEntity extends LivingEntity {
 		nbt.put("Items", list);
 	}
 	private void breakAndDropItem(DamageSource damageSource) {
-		ItemStack stack = new ItemStack(SimulacraItems.STATUE);
+		ItemStack stack = new ItemStack(SimulacraItems.MANNEQUIN);
 		if(this.getRetain()) {
 			NbtCompound nbt = new NbtCompound();
 			this.writeNbt(nbt);
@@ -261,6 +262,13 @@ public class MannequinEntity extends LivingEntity {
 			}
 		}
 	}
+
+	@Nullable
+	@Override
+	public ItemStack getPickBlockStack() {
+		return new ItemStack(SimulacraItems.MANNEQUIN);
+	}
+
 	@Override
 	public ActionResult interact(PlayerEntity player, Hand hand) {
 		if(player.getStackInHand(hand).isEmpty()) {

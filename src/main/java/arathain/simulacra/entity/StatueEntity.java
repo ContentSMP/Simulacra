@@ -36,6 +36,7 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -113,6 +114,12 @@ public class StatueEntity extends LivingEntity {
 	@Override
 	public Iterable<ItemStack> getArmorItems() {
 		return ImmutableList.of(this.inventory.getStack(4), this.inventory.getStack(3), this.inventory.getStack(2), this.inventory.getStack(1));
+	}
+
+	@Nullable
+	@Override
+	public ItemStack getPickBlockStack() {
+		return new ItemStack(SimulacraItems.STATUE);
 	}
 
 	@Override
