@@ -327,6 +327,9 @@ public class MannequinEntity extends LivingEntity {
 						if (l - this.lastHitTime > 5L) {
 							Vec3d pos = source.getPosition();
 							this.world.sendEntityStatus(this, (byte)32);
+							if(pos == null) {
+								pos = this.getPos();
+							}
 							this.knockbackVelocity = (float) -MathHelper.atan2(pos.x - this.getX(), pos.z - this.getZ());
 							FlingMannequinPacket.send(this, this.knockbackVelocity);
 							this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
